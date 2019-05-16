@@ -1,0 +1,59 @@
+       Crawler
+            import org.codelibs.fess.es.config.exentity.WebConfig;
+            List<WebConfig> l = new ArrayList<WebConfig>();
+            WebConfig w = new WebConfig();
+            w.setIncludedUrls("https://news.mynavi.jp/itsearch/article/push_list/all.*\nhttps://news.mynavi.jp/itsearch/article/.*/[0-9]+");
+            w.setIncludedDocUrls("https://news.mynavi.jp/itsearch/article/.*/[0-9]+");
+            w.setUrls("https://news.mynavi.jp/itsearch/article/push_list/all_3\nhttps://news.mynavi.jp/itsearch/article/push_list/all_4");
+            w.setUserAgent("Mozilla/5.0 (compatible; Fess/12.4; +http://fess.codelibs.org/bot.html)");
+            w.setId("xEs0u2oBnivvHk78fXXX");
+            w.setConfigParameter("field.xpath.article_category=//LI[@class=’genre_tag sp-none’]/SPAN\nfield.xpath.article_body=//DIV[@class=’articleContent’]/P\nconfig.html.canonical.xpath=");
+            w.setVersionNo(1L);
+            w.setDepth(1);
+            w.setCreatedBy("admin");
+            w.setSortOrder(0);
+            w.setNumOfThread(3);
+            w.setName("WebbbClawll");
+            w.setCreatedTime(1557918940914L);
+            w.setUpdatedTime(1557921005214L);
+            w.setUpdatedBy("admin");
+            w.setBoost(1f);
+            w.setIntervalTime(10000);
+            String[] strs=new String[1];
+            strs[0]="Rquest";
+            w.setPermissions(strs);
+            l.add(w);
+           
+            if (runAll || webConfigIdList != null || fileConfigIdList != null) {
+                webFsCrawlerThread = new Thread((Runnable) () -> {
+                    // crawl web
+                        writeTimeToSessionInfo(crawlingInfoHelper, Constants.WEB_FS_CRAWLER_START_TIME);
+                        webFsIndexHelper.crawl2("xEs0u2oBnivvHk78fXXX", l, null);
+                        
+                        
+ WebFsIndexHelper
+     public void crawl2(final String sessionId, final List<WebConfig> webConfigList, final List<String> fileConfigIdList) {
+        //final boolean runAll = webConfigIdList == null && fileConfigIdList == null;
+        //final List<WebConfig> webConfigList;
+       // if (runAll || webConfigIdList != null) {
+         //   webConfigList = ComponentUtil.getCrawlingConfigHelper().getWebConfigListByIds(webConfigIdList); //webConfigのListをESから取得。
+        //} else {
+        //    webConfigList = Collections.emptyList();
+        //}
+        final List<FileConfig> fileConfigList;
+        //if (runAll || fileConfigIdList != null) {
+        //    fileConfigList = ComponentUtil.getCrawlingConfigHelper().getFileConfigListByIds(fileConfigIdList);
+        //} else {
+            fileConfigList = Collections.emptyList();
+        //}
+
+        if (webConfigList.isEmpty() && fileConfigList.isEmpty()) {
+            // nothing
+            if (logger.isInfoEnabled()) {
+                logger.info("No crawling target urls.");
+            }
+            return;
+        }
+
+        doCrawl(sessionId, webConfigList, fileConfigList);
+    }
